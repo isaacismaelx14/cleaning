@@ -1,0 +1,21 @@
+#folderSelect {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+#toDo {
+  padding: 10px;
+}
+
+.list-item {
+  color: #fff;
+  font-size: 17px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  padding-bottom: 10px;
+}
+
+.list-item span {
+  color: rgb(15, 6, 6);
+}
