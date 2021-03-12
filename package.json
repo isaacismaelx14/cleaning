@@ -8,7 +8,7 @@
     "dev": "concurrently \"npm run copy-files\" \"npm run watch:typescript\" \"npm run watch:webpack\" \"npm start\"",
 
     "create:dist": "concurrently  \"npm run copy-files\" \"npm run build:typescript\"",
-    "create:build": "concurrently \"npm run create:dist\" \"npm run build:webpack\"",
+    "create:build": "concurrently  \"npm run build:webpack\"",
 
     "copy-files": "copyfiles -u 1 src/**/*.html src/**/*.css src/**/*.js dist/",
     "watch:webpack": "webpack --config webpack.common.js --watch",
