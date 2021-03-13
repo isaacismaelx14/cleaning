@@ -63,6 +63,7 @@ var fs = __importStar(require("fs"));
 var FileController = (function () {
     function FileController() {
         this.counterRenamed = 0;
+        this.renameIdent = "-(r";
         this.devOptions = {
             doMove: false,
             doRename: false,
@@ -206,33 +207,62 @@ var FileController = (function () {
     FileController.prototype.chechIfFileExist = function (fileToMove) {
         return __awaiter(this, void 0, void 0, function () {
             var file, finalPath, fileName;
-            return __generator(this, function (_a) {
-                file = fileToMove.file, finalPath = fileToMove.finalPath;
-                fileName = file.fileName;
-                if (fs.existsSync(finalPath + fileName)) {
-                    return [2, {
-                            change: true,
-                            newName: this.renameFile(fileToMove),
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        file = fileToMove.file, finalPath = fileToMove.finalPath;
+                        fileName = file.fileName;
+                        if (!fs.existsSync(finalPath + fileName)) return [3, 2];
+                        _a = {
+                            change: true
+                        };
+                        return [4, this.renameFile(fileToMove)];
+                    case 1: return [2, (_a.newName = _b.sent(),
+                            _a)];
+                    case 2: return [2, {
+                            change: false,
                         }];
                 }
-                return [2, {
-                        change: false,
-                    }];
             });
         });
     };
     FileController.prototype.renameFile = function (fileToMove) {
-        this.counterRenamed++;
-        var file = fileToMove.file;
-        var name = file.unstructured.name;
-        var newName = name + "-(r" + this.counterRenamed + ")";
-        return newName;
+        return __awaiter(this, void 0, void 0, function () {
+            var file, finalPath, name, numb, newName;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.counterRenamed++;
+                        file = fileToMove.file, finalPath = fileToMove.finalPath;
+                        name = file.unstructured.name;
+                        return [4, this.checkIfRenamedBefore(finalPath, name)];
+                    case 1:
+                        numb = _a.sent();
+                        newName = "" + name + this.renameIdent + numb + ")";
+                        return [2, newName];
+                }
+            });
+        });
     };
-    FileController.prototype.checkIfRenamedBefore = function (name) {
-        if (name.includes("-(r")) {
-            var preName1 = name.split("-(r");
-            console.log(preName1);
-        }
+    FileController.prototype.checkIfRenamedBefore = function (finalPath, name) {
+        return __awaiter(this, void 0, void 0, function () {
+            var finalPahtFiles, number, i, preName1, preName2;
+            return __generator(this, function (_a) {
+                finalPahtFiles = fs.readdirSync(finalPath);
+                number = 1;
+                for (i = 0; i < finalPahtFiles.length; i++) {
+                    if (finalPahtFiles[i].includes(this.renameIdent)) {
+                        preName1 = finalPahtFiles[i].split(this.renameIdent);
+                        if (preName1[0] === name) {
+                            preName2 = preName1[1].split(")");
+                            number = parseInt(preName2[0]) + 1;
+                        }
+                    }
+                }
+                return [2, number];
+            });
+        });
     };
     FileController.prototype.doFileRename = function (fileToMove) {
         var _this = this;

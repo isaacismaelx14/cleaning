@@ -2,10 +2,7 @@ interface IFilesComplement {
   fileName: string;
   renamed: boolean;
   lastName?: string;
-  unstructured: {
-    name: string;
-    ext: string;
-  };
+  unstructured: unstructured;
 }
 
 interface IFileToMove {
@@ -21,7 +18,10 @@ interface IRenameFile {
 
 interface IFinalResut {
   messageType: messageType;
-  message: any;
+  message: unknown;
 }
-
+type unstructured = {
+  name: string;
+  ext: string;
+};
 type messageType = "Success" | "Error" | "Warning";

@@ -4,7 +4,7 @@ import * as fs from "fs";
 export default class FileController {
   private routeController: RouteController;
   private counterRenamed: number = 0;
-
+  private renameIdent: string = "-(r";
   /*Use this only when you developing your app to disable default functions
   
   All "TRUE" of default*/
@@ -132,7 +132,7 @@ export default class FileController {
     if (fs.existsSync(finalPath + fileName)) {
       return {
         change: true,
-        newName: this.renameFile(fileToMove),
+        newName: await this.renameFile(fileToMove),
       };
     }
     return {
@@ -140,20 +140,30 @@ export default class FileController {
     };
   }
 
-  private renameFile(fileToMove: IFileToMove): string {
+  private async renameFile(fileToMove: IFileToMove): Promise<string> {
     this.counterRenamed++;
-    const { file } = fileToMove;
-    const { name } = file.unstructured;
-    const newName: string = `${name}-(r${this.counterRenamed})`;
 
+    const { file, finalPath } = fileToMove;
+    const { name } = file.unstructured;
+
+    const numb: number = await this.checkIfRenamedBefore(finalPath, name);
+    const newName: string = `${name}${this.renameIdent}${numb})`;
     return newName;
   }
 
-  private checkIfRenamedBefore(name: string) {
-    if (name.includes("-(r")) {
-      const preName1: string[] = name.split("-(r");
-      console.log(preName1);
+  private async checkIfRenamedBefore(finalPath: string, name: string) {
+    const finalPahtFiles = fs.readdirSync(finalPath);
+    let number: number = 1;
+    for (let i: number = 0; i < finalPahtFiles.length; i++) {
+      if (finalPahtFiles[i].includes(this.renameIdent)) {
+        const preName1: string[] = finalPahtFiles[i].split(this.renameIdent);
+        if (preName1[0] === name) {
+          const preName2: string[] = preName1[1].split(")");
+          number = parseInt(preName2[0]) + 1;
+        }
+      }
     }
+    return number;
   }
 
   private doFileRename(fileToMove: IFileToMove[]) {
