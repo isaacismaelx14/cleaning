@@ -39,11 +39,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.executeMove = void 0;
+exports.createJson = exports.executeMove = void 0;
+var config_controller_1 = __importDefault(require("../../backend/extra/config.controller"));
 var organizeFiles_1 = __importDefault(require("../../backend/organizeFiles"));
 var organizeFiles = new organizeFiles_1.default();
 var response;
 var messageRespose = [];
+var jsonPath;
 function executeMove(array) {
     if (array === void 0) { array = []; }
     return __awaiter(this, void 0, void 0, function () {
@@ -88,7 +90,7 @@ function start(path) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4, organizeFiles
-                        .start(path)
+                        .start(path, jsonPath)
                         .then(function (res) { return __awaiter(_this, void 0, void 0, function () {
                         return __generator(this, function (_a) {
                             switch (_a.label) {
@@ -123,4 +125,14 @@ function mixArray(obj) {
         });
     });
 }
+function createJson(path) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            config_controller_1.default(path);
+            jsonPath = path;
+            return [2];
+        });
+    });
+}
+exports.createJson = createJson;
 //# sourceMappingURL=doMove.js.map

@@ -60,14 +60,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs = __importStar(require("fs"));
 var checkFile_1 = __importDefault(require("./checkFile"));
+var readConfi_controller_1 = require("./readConfi.controller");
 var RouteController = (function () {
     function RouteController() {
-        this.audioPath = "C:\\Users\\isaac\\Music\\";
-        this.compressedPath = "C:\\Users\\isaac\\Downloads\\";
-        this.execPath = "C:\\Users\\isaac\\Downloads\\";
-        this.imagePath = "C:\\Users\\isaac\\Pictures\\";
-        this.textPath = "C:\\Users\\isaac\\Documents\\Commond Documents\\";
-        this.videoPath = "C:\\Users\\isaac\\Videos\\";
+        this.audioPath = readConfi_controller_1.jsonResponse.audioFiles.routeFor;
+        this.compressedPath = readConfi_controller_1.jsonResponse.compressedFiles.routeFor;
+        this.execPath = readConfi_controller_1.jsonResponse.executableFiles.routeFor;
+        this.imagePath = readConfi_controller_1.jsonResponse.imageFiles.routeFor;
+        this.textPath = readConfi_controller_1.jsonResponse.textFiles.routeFor;
+        this.videoPath = readConfi_controller_1.jsonResponse.videoFiles.routeFor;
+        if (readConfi_controller_1.jsonResponse.othersFiles) {
+            this.otherPath = readConfi_controller_1.jsonResponse.othersFiles.routeFor;
+        }
     }
     RouteController.prototype.checkExist = function (path) {
         return __awaiter(this, void 0, void 0, function () {
@@ -120,28 +124,35 @@ var RouteController = (function () {
             });
         });
     };
-    RouteController.prototype.typeOf = function (ext) {
+    RouteController.prototype.typeOf = function (ext, jsonPath) {
         return __awaiter(this, void 0, void 0, function () {
-            var checker;
-            return __generator(this, function (_a) {
-                checker = new checkFile_1.default(ext);
-                switch (true) {
-                    case checker.isAudioFile():
-                        return [2, this.forAudio()];
-                    case checker.isCompressedFile():
-                        return [2, this.forCompressed()];
-                    case checker.isExecutableFile():
-                        return [2, this.forExec()];
-                    case checker.isImageFile():
-                        return [2, this.forImage()];
-                    case checker.isTextFile():
-                        return [2, this.forText()];
-                    case checker.isVideoFile():
-                        return [2, this.forVideo()];
-                    default:
-                        return [2, "unknow"];
+            var checker, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        checker = new checkFile_1.default(ext, jsonPath);
+                        _a = true;
+                        switch (_a) {
+                            case checker.isAudioFile(): return [3, 2];
+                            case checker.isCompressedFile(): return [3, 3];
+                            case checker.isExecutableFile(): return [3, 4];
+                            case checker.isImageFile(): return [3, 5];
+                        }
+                        return [4, checker.isTextFile()];
+                    case 1:
+                        switch (_a) {
+                            case _b.sent(): return [3, 6];
+                            case checker.isVideoFile(): return [3, 7];
+                        }
+                        return [3, 8];
+                    case 2: return [2, this.forAudio()];
+                    case 3: return [2, this.forCompressed()];
+                    case 4: return [2, this.forExec()];
+                    case 5: return [2, this.forImage()];
+                    case 6: return [2, this.forText()];
+                    case 7: return [2, this.forVideo()];
+                    case 8: return [2, "unknow"];
                 }
-                return [2];
             });
         });
     };

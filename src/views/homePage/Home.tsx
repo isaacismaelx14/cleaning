@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import Renderer from "electron";
-import { executeMove } from "../../sources/js/doMove";
+import { executeMove, createJson } from "../../sources/js/doMove";
 import List from "../../components/List";
 import ButtonSm from "../../addons/buttons";
 import StateApp from "../../components/StateApp";
@@ -22,7 +22,7 @@ export default function Home() {
   const [fileToMove, setFileToMove] = useState(undefined);
   const [store, dispatch] = useContext(StoreContext);
 
-  console.log(store);
+  createJson(store.path);
 
   const sendCall = (e) => {
     setAppState("none");
@@ -57,6 +57,8 @@ export default function Home() {
   const handleClickOrder = async (e) => {
     setAppState("doing");
     const resp = await executeMove(list);
+    console.log(resp);
+
     if (resp.messageType) {
       setFileToMove(resp.message);
       setAppState(resp.messageType);

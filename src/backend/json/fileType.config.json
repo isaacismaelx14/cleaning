@@ -1,0 +1,38 @@
+{
+  "textFiles": {
+    "routeFor": "\\Documents\\Commond Documents\\",
+    "files": [".txt", ".doc", ".docx", "pptx", ".odt", ".docm", ".pdf", ".rtf"]
+  },
+  "audioFiles": {
+    "routeFor": "\\Music\\",
+    "files": [
+      ".aif",
+      ".cda",
+      ".mid",
+      ".midi",
+      ".mp3",
+      ".mpa",
+      ".ogg",
+      ".wav",
+      ".wma",
+      ".wpl"
+    ]
+  },
+
+  "compressedFiles": {
+    "routeFor": "\\Downloads\\zipped\\",
+    "files": [".7z", ".rar", ".zip"]
+  },
+  "imageFiles": {
+    "routeFor": "\\Pictures\\",
+    "files": [".jpg", ".jpeg", ".png", ".gif", ".ico", ".tiff", ".NEF"]
+  },
+  "videoFiles": {
+    "routeFor": "\\Videos\\",
+    "files": [".avi", ".flv", ".mov", ".mp4", ".wmv", ".m4v"]
+  },
+  "executableFiles": {
+    "routeFor": "\\Downloads\\exe\\",
+    "files": [".exe", ".msi"]
+  }
+}

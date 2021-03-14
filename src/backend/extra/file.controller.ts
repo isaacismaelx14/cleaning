@@ -31,12 +31,16 @@ export default class FileController {
 
   public async checkType(
     files: IFilesComplement[],
-    initialRoute: string
+    initialRoute: string,
+    jsonPath: string
   ): Promise<IFileToMove[]> {
     let preFilesToMove: IFileToMove[] = [];
     for (let i: number = 0; i < files.length; i++) {
       const { unstructured } = files[i];
-      const finalPath = await this.routeController.typeOf(unstructured.ext);
+      const finalPath = await this.routeController.typeOf(
+        unstructured.ext,
+        jsonPath
+      );
 
       if (initialRoute)
         preFilesToMove.push({

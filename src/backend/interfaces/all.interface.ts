@@ -27,3 +27,14 @@ type unstructured = {
 
 type messageType = "Success" | "Error" | "Warning";
 type IAppState = "doing" | "none" | messageType;
+
+type fileConfig = { files: string[]; routeFor: string };
+type jsonRe = {
+  textFiles: fileConfig;
+  audioFiles: fileConfig;
+  compressedFiles: fileConfig;
+  imageFiles: fileConfig;
+  videoFiles: fileConfig;
+  executableFiles: fileConfig;
+  othersFiles?: { files?: string[]; routeFor: string };
+};

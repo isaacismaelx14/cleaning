@@ -77,7 +77,7 @@ var FileController = (function () {
         }
         this.routeController = new routes_controller_1.default();
     }
-    FileController.prototype.checkType = function (files, initialRoute) {
+    FileController.prototype.checkType = function (files, initialRoute, jsonPath) {
         return __awaiter(this, void 0, void 0, function () {
             var preFilesToMove, i, unstructured, finalPath;
             return __generator(this, function (_a) {
@@ -89,7 +89,7 @@ var FileController = (function () {
                     case 1:
                         if (!(i < files.length)) return [3, 4];
                         unstructured = files[i].unstructured;
-                        return [4, this.routeController.typeOf(unstructured.ext)];
+                        return [4, this.routeController.typeOf(unstructured.ext, jsonPath)];
                     case 2:
                         finalPath = _a.sent();
                         if (initialRoute)

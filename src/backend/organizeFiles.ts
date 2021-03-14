@@ -1,3 +1,4 @@
+import { readJson } from "./extra/config.controller";
 import FileController from "./extra/file.controller";
 
 export default class OrganizeFiles {
@@ -8,14 +9,14 @@ export default class OrganizeFiles {
     this.fileController = new FileController();
   }
 
-  async start(path: string): Promise<IFinalResut> {
+  async start(path: string, jsonPath: string): Promise<IFinalResut> {
     return new Promise((resolve, reject) => {
       let message: IFinalResut = {
         messageType: "Error",
         message: "Error desconocido Code 1-Unknoun",
       };
 
-      this.gettingFiles(path)
+      this.gettingFiles(path, jsonPath)
         .then(async (m) => {
           if (this.filesToMove) {
             this.fileController
@@ -41,14 +42,14 @@ export default class OrganizeFiles {
     });
   }
 
-  private gettingFiles(path: string): Promise<boolean> {
+  private gettingFiles(path: string, jsonPath: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const fController = this.fileController;
       fController.readFromPath(path).then(async (result) => {
         if (result.length === 0) {
           reject(false);
         } else {
-          this.filesToMove = fController.checkType(result, path);
+          this.filesToMove = fController.checkType(result, path, jsonPath);
           resolve(true);
         }
       });

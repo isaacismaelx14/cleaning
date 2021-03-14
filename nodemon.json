@@ -1,3 +1,4 @@
 {
-    "ext": "html, css, js"
+  "ext": "html, css, js, json",
+  "ignore": "./src/souces/json/"
 }
