@@ -25,8 +25,23 @@ var Checkers = (function () {
             ".wpl",
         ];
         this.compressedFiles = [".7z", ".rar", ".zip"];
-        this.imageFiles = [".jpg", ".jpeg", ".png", ".gif", ".ico", ".tiff"];
-        this.videoFiles = [".avi", ".flv", ".mov", ".mp4", ".wmv", ".m4v"];
+        this.imageFiles = [
+            ".jpg",
+            ".jpeg",
+            ".png",
+            ".gif",
+            ".ico",
+            ".tiff",
+            ".NEF",
+        ];
+        this.videoFiles = [
+            ".avi",
+            ".flv",
+            ".mov",
+            ".mp4",
+            ".wmv",
+            ".m4v",
+        ];
         this.executableFiles = [".exe", ".msi"];
         this.ext = ext;
     }

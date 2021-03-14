@@ -18,10 +18,12 @@ interface IRenameFile {
 
 interface IFinalResut {
   messageType: messageType;
-  message: unknown;
+  message: any;
 }
 type unstructured = {
   name: string;
   ext: string;
 };
+
 type messageType = "Success" | "Error" | "Warning";
+type IAppState = "doing" | "none" | messageType;

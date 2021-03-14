@@ -1,5 +1,5 @@
 export default class Checkers {
-  private ext:string;
+  private ext: string;
   private textFiles: string[] = [
     ".txt",
     ".doc",
@@ -10,7 +10,7 @@ export default class Checkers {
     ".pdf",
     ".rtf",
   ];
-  private audioFiles: string[]  = [
+  private audioFiles: string[] = [
     ".aif",
     ".cda",
     ".mid",
@@ -23,37 +23,54 @@ export default class Checkers {
     ".wpl",
   ];
 
-  private compressedFiles: string[]  = [".7z", ".rar", ".zip"];
-  private imageFiles: string[]  = [".jpg", ".jpeg", ".png", ".gif", ".ico", ".tiff"];
-  private videoFiles: string[]  = [".avi", ".flv", ".mov", ".mp4", ".wmv", ".m4v"];
-  private executableFiles: string[]  = [".exe", ".msi"];
+  private compressedFiles: string[] = [".7z", ".rar", ".zip"];
+  private imageFiles: string[] = [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".gif",
+    ".ico",
+    ".tiff",
+    ".NEF",
+  ];
+  private videoFiles: string[] = [
+    ".avi",
+    ".flv",
+    ".mov",
+    ".mp4",
+    ".wmv",
+    ".m4v",
+  ];
+  private executableFiles: string[] = [".exe", ".msi"];
 
-  constructor(ext:string) {
+  constructor(ext: string) {
     this.ext = ext;
   }
 
-  public isTextFile():boolean  {
+  public isTextFile(): boolean {
     if (this.textFiles.find((textExt) => textExt == this.ext)) return true;
     else return false;
   }
-  public isImageFile():boolean  {
+  public isImageFile(): boolean {
     if (this.imageFiles.find((Element) => Element == this.ext)) return true;
     else return false;
   }
-  public isAudioFile():boolean  {
+  public isAudioFile(): boolean {
     if (this.audioFiles.find((Element) => Element == this.ext)) return true;
     else return false;
   }
-  public isCompressedFile():boolean  {
-    if (this.compressedFiles.find((Element) => Element == this.ext))return true;
-      else return false;
+  public isCompressedFile(): boolean {
+    if (this.compressedFiles.find((Element) => Element == this.ext))
+      return true;
+    else return false;
   }
-  public isVideoFile():boolean  {
+  public isVideoFile(): boolean {
     if (this.videoFiles.find((Element) => Element == this.ext)) return true;
     else return false;
   }
-  public isExecutableFile():boolean {
-    if (this.executableFiles.find((Element) => Element == this.ext))return true;
+  public isExecutableFile(): boolean {
+    if (this.executableFiles.find((Element) => Element == this.ext))
+      return true;
     else return false;
   }
 }

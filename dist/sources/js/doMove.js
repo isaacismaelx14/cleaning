@@ -43,12 +43,15 @@ exports.executeMove = void 0;
 var organizeFiles_1 = __importDefault(require("../../backend/organizeFiles"));
 var organizeFiles = new organizeFiles_1.default();
 var response;
+var messageRespose = [];
 function executeMove(array) {
     if (array === void 0) { array = []; }
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4, destrucTure(array, function (path) { return start(path); })];
+                case 0:
+                    messageRespose = [];
+                    return [4, destrucTure(array, function (path) { return start(path); })];
                 case 1:
                     _a.sent();
                     return [2, response];
@@ -81,13 +84,42 @@ function destrucTure(array, callBack) {
 }
 function start(path) {
     return __awaiter(this, void 0, void 0, function () {
+        var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4, organizeFiles.start(path)];
+                case 0: return [4, organizeFiles
+                        .start(path)
+                        .then(function (res) { return __awaiter(_this, void 0, void 0, function () {
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0: return [4, mixArray(res)];
+                                case 1:
+                                    response = _a.sent();
+                                    return [2];
+                            }
+                        });
+                    }); })
+                        .catch(function (res) {
+                        response = res;
+                    })];
                 case 1:
-                    response = _a.sent();
+                    _a.sent();
                     return [2];
             }
+        });
+    });
+}
+function mixArray(obj) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            console.log("Ejecutando");
+            obj.message.forEach(function (element) {
+                messageRespose.push(element);
+            });
+            return [2, {
+                    messageType: obj.messageType,
+                    message: messageRespose,
+                }];
         });
     });
 }

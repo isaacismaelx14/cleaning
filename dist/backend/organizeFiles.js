@@ -42,121 +42,132 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var file_controller_1 = __importDefault(require("./extra/file.controller"));
 var OrganizeFiles = (function () {
     function OrganizeFiles() {
-        this.filesToMove = [];
         this.fileController = new file_controller_1.default();
     }
     OrganizeFiles.prototype.start = function (path) {
         return __awaiter(this, void 0, void 0, function () {
-            var message;
             var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        message = {
+                return [2, new Promise(function (resolve, reject) {
+                        var message = {
                             messageType: "Error",
                             message: "Error desconocido Code 1-Unknoun",
                         };
-                        return [4, this.gettingFiles(path)];
-                    case 1:
-                        if (!_a.sent()) return [3, 3];
-                        return [4, this.fileController
-                                .checkingFiles(this.filesToMove)
-                                .then(function () { })
-                                .then(function () { return __awaiter(_this, void 0, void 0, function () {
-                                return __generator(this, function (_a) {
-                                    switch (_a.label) {
-                                        case 0: return [4, this.moveFiles()];
-                                        case 1:
-                                            message = _a.sent();
-                                            return [2];
-                                    }
-                                });
-                            }); })
-                                .catch(function (message) { })];
-                    case 2:
-                        _a.sent();
-                        return [3, 4];
-                    case 3:
-                        message = {
-                            messageType: "Warning",
-                            message: "Las rutas no contienen ningun archivo",
-                        };
-                        _a.label = 4;
-                    case 4: return [2, message];
-                }
+                        _this.gettingFiles(path)
+                            .then(function (m) { return __awaiter(_this, void 0, void 0, function () {
+                            var _a, _b;
+                            var _this = this;
+                            return __generator(this, function (_c) {
+                                switch (_c.label) {
+                                    case 0:
+                                        if (!this.filesToMove) return [3, 2];
+                                        _b = (_a = this.fileController)
+                                            .checkingFiles;
+                                        return [4, this.filesToMove];
+                                    case 1:
+                                        _b.apply(_a, [_c.sent()])
+                                            .then(function () { })
+                                            .then(function () { return __awaiter(_this, void 0, void 0, function () {
+                                            return __generator(this, function (_a) {
+                                                switch (_a.label) {
+                                                    case 0: return [4, this.moveFiles()];
+                                                    case 1:
+                                                        message = _a.sent();
+                                                        resolve(message);
+                                                        return [2];
+                                                }
+                                            });
+                                        }); })
+                                            .catch(function (messageE) {
+                                            message.message = messageE;
+                                            reject(message);
+                                        });
+                                        _c.label = 2;
+                                    case 2: return [2];
+                                }
+                            });
+                        }); })
+                            .catch(function (e) {
+                            message = {
+                                messageType: "Warning",
+                                message: "Las rutas no contienen ningun archivo",
+                            };
+                            reject(message);
+                        });
+                    })];
             });
         });
     };
     OrganizeFiles.prototype.gettingFiles = function (path) {
-        return __awaiter(this, void 0, void 0, function () {
-            var fController, files, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        fController = this.fileController;
-                        return [4, fController.readFromPath(path)];
-                    case 1:
-                        files = _b.sent();
-                        if (!(files.length === 0)) return [3, 2];
-                        return [2, false];
-                    case 2:
-                        _a = this;
-                        return [4, fController.checkType(files, path)];
-                    case 3:
-                        _a.filesToMove = _b.sent();
-                        return [2, true];
-                }
-            });
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            var fController = _this.fileController;
+            fController.readFromPath(path).then(function (result) { return __awaiter(_this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    if (result.length === 0) {
+                        reject(false);
+                    }
+                    else {
+                        this.filesToMove = fController.checkType(result, path);
+                        resolve(true);
+                    }
+                    return [2];
+                });
+            }); });
         });
     };
     OrganizeFiles.prototype.moveFiles = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var lMessage;
+            var lMessage, _a, _b;
             var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         lMessage = {
                             messageType: "Error",
                             message: "Error desconocido Code 0-Unknoun",
                         };
-                        return [4, this.fileController
-                                .moveFiles(this.filesToMove)
-                                .then(function (message) { return __awaiter(_this, void 0, void 0, function () {
-                                var _a;
-                                return __generator(this, function (_b) {
-                                    switch (_b.label) {
-                                        case 0:
-                                            _a = {
-                                                messageType: "Success"
-                                            };
-                                            return [4, message];
-                                        case 1:
-                                            lMessage = (_a.message = _b.sent(),
-                                                _a);
-                                            return [2];
-                                    }
-                                });
-                            }); })
-                                .catch(function (message) { return __awaiter(_this, void 0, void 0, function () {
-                                var _a;
-                                return __generator(this, function (_b) {
-                                    switch (_b.label) {
-                                        case 0:
-                                            _a = {
-                                                messageType: "Error"
-                                            };
-                                            return [4, message];
-                                        case 1:
-                                            lMessage = (_a.message = _b.sent(),
-                                                _a);
-                                            return [2];
-                                    }
-                                });
-                            }); })];
-                    case 1:
-                        _a.sent();
-                        return [2, lMessage];
+                        if (!this.filesToMove) return [3, 3];
+                        _b = (_a = this.fileController)
+                            .moveFiles;
+                        return [4, this.filesToMove];
+                    case 1: return [4, _b.apply(_a, [_c.sent()])
+                            .then(function (message) { return __awaiter(_this, void 0, void 0, function () {
+                            var _a;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        _a = {
+                                            messageType: "Success"
+                                        };
+                                        return [4, message];
+                                    case 1:
+                                        lMessage = (_a.message = _b.sent(),
+                                            _a);
+                                        return [2];
+                                }
+                            });
+                        }); })
+                            .catch(function (message) { return __awaiter(_this, void 0, void 0, function () {
+                            var _a;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        _a = {
+                                            messageType: "Error"
+                                        };
+                                        return [4, message];
+                                    case 1:
+                                        lMessage = (_a.message = _b.sent(),
+                                            _a);
+                                        return [2];
+                                }
+                            });
+                        }); })];
+                    case 2:
+                        _c.sent();
+                        _c.label = 3;
+                    case 3: return [2, lMessage];
                 }
             });
         });

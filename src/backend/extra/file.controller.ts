@@ -1,8 +1,14 @@
 import RouteController from "./routes.controller";
 import * as fs from "fs";
+import * as os from "os";
+
+const cpus: number = os.cpus().length;
+const waitTime: number = cpus <= 2 ? 25 : cpus <= 4 ? 13 : cpus <= 6 ? 10 : 5;
+console.log(waitTime);
 
 export default class FileController {
   private routeController: RouteController;
+
   private counterRenamed: number = 0;
   private renameIdent: string = "-(r";
   /*Use this only when you developing your app to disable default functions
@@ -53,9 +59,11 @@ export default class FileController {
           const newPath = finalPath + fileName;
 
           //devOptions.doRename can disable the action of rename files
-          if (this.devOptions.doRename) {
-            fs.renameSync(oldPath, newPath);
-          }
+          setTimeout(() => {
+            if (this.devOptions.doRename) {
+              fs.renameSync(oldPath, newPath);
+            }
+          }, 500);
         }
         resolve(files);
       } catch (error) {
@@ -64,14 +72,14 @@ export default class FileController {
     });
   }
 
-  public async readFromPath(path): Promise<IFilesComplement[]> {
-    const result: string[] = fs.readdirSync(path);
+  public readFromPath(path): Promise<IFilesComplement[]> {
+    return new Promise((resolve) => {
+      const result: string[] = fs.readdirSync(path);
 
-    const unstructuredFile: IFilesComplement[] = await this.unstructuredFiles(
-      result
-    );
-
-    return unstructuredFile;
+      this.unstructuredFiles(result).then((result) => {
+        resolve(result);
+      });
+    });
   }
 
   public checkingFiles(filesToMove: IFileToMove[]): Promise<IFinalResut | any> {
@@ -103,24 +111,28 @@ export default class FileController {
     });
   }
 
-  private async unstructuredFiles(
-    files: string[] = []
-  ): Promise<IFilesComplement[]> {
-    let filesComplements: IFilesComplement[] = [];
-    for (let i: number = 0; i < files.length; i++) {
-      if (files[i].includes(".")) {
-        const fileComplements = files[i].split(".");
-        filesComplements.push({
-          fileName: files[i],
-          renamed: false,
-          unstructured: {
-            name: fileComplements[0],
-            ext: "." + fileComplements[1],
-          },
-        });
+  private unstructuredFiles(files: string[] = []): Promise<IFilesComplement[]> {
+    return new Promise((resolve) => {
+      let filesComplements: IFilesComplement[] = [];
+      for (let i: number = 0; i < files.length; i++) {
+        if (files[i].includes(".")) {
+          const fileComplements = files[i].split(".");
+          setTimeout(() => {
+            filesComplements.push({
+              fileName: files[i],
+              renamed: false,
+              unstructured: {
+                name: fileComplements[0],
+                ext: "." + fileComplements[fileComplements.length - 1],
+              },
+            });
+          }, waitTime);
+        }
       }
-    }
-    return filesComplements;
+      setTimeout(() => {
+        resolve(filesComplements);
+      }, waitTime * files.length);
+    });
   }
 
   private async chechIfFileExist(
@@ -167,6 +179,7 @@ export default class FileController {
   }
 
   private doFileRename(fileToMove: IFileToMove[]) {
+    let interWaitTime = waitTime;
     return new Promise((resolve, reject) => {
       try {
         for (let i: number = 0; i < fileToMove.length; i++) {
@@ -177,11 +190,17 @@ export default class FileController {
             const newPath = initialPath + fileName;
             //devOptions.doMove can disable the action of move files
             if (this.devOptions.doMove) {
-              fs.renameSync(oldPath, newPath);
+              setTimeout(() => {
+                fs.renameSync(oldPath, newPath);
+              }, waitTime);
+            } else {
+              interWaitTime = 0;
             }
           }
         }
-        resolve("Se han renombrando los archivos con exito");
+        setTimeout(() => {
+          resolve("Se han renombrando los archivos con exito");
+        }, interWaitTime * fileToMove.length);
       } catch (error) {
         reject("Ha ocurrido un error leyendo los archios > " + error);
       }

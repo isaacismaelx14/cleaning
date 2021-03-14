@@ -60,6 +60,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var routes_controller_1 = __importDefault(require("./routes.controller"));
 var fs = __importStar(require("fs"));
+var os = __importStar(require("os"));
+var cpus = os.cpus().length;
+var waitTime = cpus <= 2 ? 25 : cpus <= 4 ? 13 : cpus <= 6 ? 10 : 5;
+console.log(waitTime);
 var FileController = (function () {
     function FileController() {
         this.counterRenamed = 0;
@@ -107,14 +111,19 @@ var FileController = (function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
             try {
-                for (var i = 0; i < files.length; i++) {
+                var _loop_1 = function (i) {
                     var _a = files[i], file = _a.file, finalPath = _a.finalPath, initialPath = _a.initialPath;
                     var fileName = file.fileName;
                     var oldPath = initialPath + fileName;
                     var newPath = finalPath + fileName;
-                    if (_this.devOptions.doRename) {
-                        fs.renameSync(oldPath, newPath);
-                    }
+                    setTimeout(function () {
+                        if (_this.devOptions.doRename) {
+                            fs.renameSync(oldPath, newPath);
+                        }
+                    }, 500);
+                };
+                for (var i = 0; i < files.length; i++) {
+                    _loop_1(i);
                 }
                 resolve(files);
             }
@@ -124,17 +133,11 @@ var FileController = (function () {
         });
     };
     FileController.prototype.readFromPath = function (path) {
-        return __awaiter(this, void 0, void 0, function () {
-            var result, unstructuredFile;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        result = fs.readdirSync(path);
-                        return [4, this.unstructuredFiles(result)];
-                    case 1:
-                        unstructuredFile = _a.sent();
-                        return [2, unstructuredFile];
-                }
+        var _this = this;
+        return new Promise(function (resolve) {
+            var result = fs.readdirSync(path);
+            _this.unstructuredFiles(result).then(function (result) {
+                resolve(result);
             });
         });
     };
@@ -183,25 +186,29 @@ var FileController = (function () {
     };
     FileController.prototype.unstructuredFiles = function (files) {
         if (files === void 0) { files = []; }
-        return __awaiter(this, void 0, void 0, function () {
-            var filesComplements, i, fileComplements;
-            return __generator(this, function (_a) {
-                filesComplements = [];
-                for (i = 0; i < files.length; i++) {
-                    if (files[i].includes(".")) {
-                        fileComplements = files[i].split(".");
+        return new Promise(function (resolve) {
+            var filesComplements = [];
+            var _loop_2 = function (i) {
+                if (files[i].includes(".")) {
+                    var fileComplements_1 = files[i].split(".");
+                    setTimeout(function () {
                         filesComplements.push({
                             fileName: files[i],
                             renamed: false,
                             unstructured: {
-                                name: fileComplements[0],
-                                ext: "." + fileComplements[1],
+                                name: fileComplements_1[0],
+                                ext: "." + fileComplements_1[fileComplements_1.length - 1],
                             },
                         });
-                    }
+                    }, waitTime);
                 }
-                return [2, filesComplements];
-            });
+            };
+            for (var i = 0; i < files.length; i++) {
+                _loop_2(i);
+            }
+            setTimeout(function () {
+                resolve(filesComplements);
+            }, waitTime * files.length);
         });
     };
     FileController.prototype.chechIfFileExist = function (fileToMove) {
@@ -266,20 +273,31 @@ var FileController = (function () {
     };
     FileController.prototype.doFileRename = function (fileToMove) {
         var _this = this;
+        var interWaitTime = waitTime;
         return new Promise(function (resolve, reject) {
             try {
-                for (var i = 0; i < fileToMove.length; i++) {
+                var _loop_3 = function (i) {
                     if (fileToMove[i].file.renamed) {
                         var initialPath = fileToMove[i].initialPath;
                         var _a = fileToMove[i].file, lastName = _a.lastName, fileName = _a.fileName;
-                        var oldPath = initialPath + lastName;
-                        var newPath = initialPath + fileName;
+                        var oldPath_1 = initialPath + lastName;
+                        var newPath_1 = initialPath + fileName;
                         if (_this.devOptions.doMove) {
-                            fs.renameSync(oldPath, newPath);
+                            setTimeout(function () {
+                                fs.renameSync(oldPath_1, newPath_1);
+                            }, waitTime);
+                        }
+                        else {
+                            interWaitTime = 0;
                         }
                     }
+                };
+                for (var i = 0; i < fileToMove.length; i++) {
+                    _loop_3(i);
                 }
-                resolve("Se han renombrando los archivos con exito");
+                setTimeout(function () {
+                    resolve("Se han renombrando los archivos con exito");
+                }, interWaitTime * fileToMove.length);
             }
             catch (error) {
                 reject("Ha ocurrido un error leyendo los archios > " + error);

@@ -80,6 +80,8 @@ var electron_1 = __importDefault(require("electron"));
 var doMove_1 = require("../sources/js/doMove");
 var List_1 = __importDefault(require("../components/List"));
 var buttons_1 = __importDefault(require("../addons/buttons"));
+var StateApp_1 = __importDefault(require("../components/StateApp"));
+var initAppState = "none";
 function App() {
     var _this = this;
     var _a = react_1.useState([
@@ -88,7 +90,10 @@ function App() {
             item: "C:\\Users\\isaac\\Desktop\\Test",
         },
     ]), list = _a[0], setList = _a[1];
+    var _b = react_1.useState(initAppState), appState = _b[0], setAppState = _b[1];
+    var _c = react_1.useState(undefined), fileToMove = _c[0], setFileToMove = _c[1];
     var sendCall = function (e) {
+        setAppState("none");
         electron_1.default.ipcRenderer.send("select:folder");
         e.preventDefault();
     };
@@ -113,14 +118,18 @@ function App() {
         }
     };
     var handleClickOrder = function (e) { return __awaiter(_this, void 0, void 0, function () {
-        var _a, _b;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var resp;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _b = (_a = console).log;
+                    setAppState("doing");
                     return [4, doMove_1.executeMove(list)];
                 case 1:
-                    _b.apply(_a, [_c.sent()]);
+                    resp = _a.sent();
+                    if (resp.messageType) {
+                        setFileToMove(resp.message);
+                        setAppState(resp.messageType);
+                    }
                     e.preventDefault();
                     return [2];
             }
@@ -131,10 +140,10 @@ function App() {
             handleAddItem(selected[0]);
         }
     });
-    return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx("div", __assign({ className: "container p-4" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "row" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "col" }, { children: [jsx_runtime_1.jsx("h2", { children: "Order Folder" }, void 0),
-                        jsx_runtime_1.jsx(List_1.default, { list: list, func: handleDeleteItem }, void 0),
+    return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx("div", __assign({ className: "container p-4" }, { children: jsx_runtime_1.jsx("div", __assign({ className: "row" }, { children: jsx_runtime_1.jsxs("div", __assign({ className: "col" }, { children: [jsx_runtime_1.jsx(List_1.default, { list: list, func: handleDeleteItem }, void 0),
                         jsx_runtime_1.jsx(buttons_1.default, __assign({ onClick: sendCall }, { children: "Add Folder" }), void 0),
-                        jsx_runtime_1.jsx(buttons_1.default, __assign({ onClick: handleClickOrder }, { children: "Order Now" }), void 0)] }), void 0) }), void 0) }), void 0) }, void 0));
+                        jsx_runtime_1.jsx(buttons_1.default, __assign({ onClick: handleClickOrder }, { children: "Order Now" }), void 0),
+                        jsx_runtime_1.jsx(StateApp_1.default, { state: appState, file: fileToMove }, void 0)] }), void 0) }), void 0) }), void 0) }, void 0));
 }
 exports.default = App;
 //# sourceMappingURL=App.js.map
