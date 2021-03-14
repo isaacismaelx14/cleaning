@@ -5,14 +5,13 @@
   "main": "src/main.ts",
   "scripts": {
     "start": "electron dist/main.js",
-    "dev": "concurrently \"npm run copy-files\" \"npm run watch:typescript\" \"npm run watch:webpack\" \"npm start\"",
-
+    "dev": "concurrently \"npm run copy-files\" \"npm run watch:typescript\" \"npm run watch:webpack\" \"npm run watch:copy-files\" \"npm start\"",
     "create:dist": "concurrently  \"npm run copy-files\" \"npm run build:typescript\"",
     "create:build": "concurrently  \"npm run build:webpack\"",
-
     "copy-files": "copyfiles -u 1 src/**/*.html src/**/*.css src/**/*.js dist/",
     "watch:webpack": "webpack --config webpack.common.js --watch",
     "watch:typescript": " tsc -p ./ -watch",
+    "watch:copy-files":"nodemon --watch src --exec npm run copy-files",
     "build:webpack": "webpack --config webpack.common.js",
     "build:typescript": " tsc -p ./"
   },
@@ -29,6 +28,7 @@
     "copyfiles": "^2.4.1",
     "css-loader": "^5.0.2",
     "electron": "^11.3.0",
+    "nodemon": "^2.0.7",
     "rimraf": "^3.0.2",
     "sass": "^1.32.8",
     "sass-loader": "^11.0.1",
