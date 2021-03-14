@@ -5,7 +5,6 @@ let response: IFinalResut;
 let messageRespose: any[] = [];
 
 export async function executeMove(array = []) {
-
   messageRespose = [];
   await destrucTure(array, (path) => start(path));
   return response;
@@ -37,6 +36,4 @@ async function mixArray(obj: IFinalResut): Promise<IFinalResut> {
     messageType: obj.messageType,
     message: messageRespose,
   };
-}
-
 }

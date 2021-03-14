@@ -4,11 +4,9 @@ export default function StateApp(props) {
   if (props.state === "doing") {
     return <p>Doing</p>;
   } else if (props.state === "Success") {
-    console.log(props.file);
-    props.file.map((value) => {});
     return (
       <div>
-        <h3>Proceso terminado</h3>
+        <h3 className="title succes">Proceso terminado</h3>
         <p>
           <strong>Numero de archivos: </strong>
           {props.file.length}
@@ -20,7 +18,7 @@ export default function StateApp(props) {
   } else if (props.state === "Warning") {
     return (
       <div>
-        <h3>Proceso terminado</h3>
+        <h3 className="title warning">Proceso terminado</h3>
         <p>{props.file}</p>
       </div>
     );
