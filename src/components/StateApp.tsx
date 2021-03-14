@@ -13,9 +13,6 @@ export default function StateApp(props) {
           <strong>Numero de archivos: </strong>
           {props.file.length}
         </p>
-        {/* {props.file.map((value, id) => {
-          return <div></div>;
-        })} */}
       </div>
     );
   } else if (props.state === "Error") {
@@ -25,9 +22,6 @@ export default function StateApp(props) {
       <div>
         <h3>Proceso terminado</h3>
         <p>{props.file}</p>
-        {/* {props.file.map((value, id) => {
-          return <div></div>;
-        })} */}
       </div>
     );
   } else {
