@@ -4,7 +4,6 @@ import OrganizeFiles from "../../backend/organizeFiles";
 const organizeFiles = new OrganizeFiles();
 let response: IFinalResut;
 let messageRespose: any[] = [];
-let jsonPath;
 
 export async function executeMove(array = []) {
   messageRespose = [];
@@ -20,7 +19,7 @@ async function destrucTure(array, callBack) {
 
 async function start(path) {
   await organizeFiles
-    .start(path, jsonPath)
+    .start(path)
     .then(async (res) => {
       response = await mixArray(res);
     })
@@ -42,5 +41,4 @@ async function mixArray(obj: IFinalResut): Promise<IFinalResut> {
 
 export async function createJson(path: string) {
   configController(path);
-  jsonPath = path;
 }

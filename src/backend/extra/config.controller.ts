@@ -41,18 +41,12 @@ export default function configController(path: string) {
   }
 }
 
-export function readJson(pathToRead: string): Promise<jsonRe> {
-  return new Promise((resolve, reject) => {
-    try {
-      fs.readFile(pathToRead, "utf-8", (err, data) => {
-        if (err) {
-          reject("error: " + err);
-        } else {
-          resolve(JSON.parse(data));
-        }
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
+let jsonResponse: jsonRe;
+
+export function redingJson() {
+  return fetch(__dirname + "\\json\\files.config.json")
+    .then((resp) => resp.json())
+    .then((res) => (jsonResponse = res));
 }
+
+export { jsonResponse };

@@ -63,7 +63,6 @@ var fs = __importStar(require("fs"));
 var os = __importStar(require("os"));
 var cpus = os.cpus().length;
 var waitTime = cpus <= 2 ? 25 : cpus <= 4 ? 13 : cpus <= 6 ? 10 : 5;
-console.log(waitTime);
 var FileController = (function () {
     function FileController() {
         this.counterRenamed = 0;
@@ -77,7 +76,7 @@ var FileController = (function () {
         }
         this.routeController = new routes_controller_1.default();
     }
-    FileController.prototype.checkType = function (files, initialRoute, jsonPath) {
+    FileController.prototype.checkType = function (files, initialRoute) {
         return __awaiter(this, void 0, void 0, function () {
             var preFilesToMove, i, unstructured, finalPath;
             return __generator(this, function (_a) {
@@ -89,7 +88,7 @@ var FileController = (function () {
                     case 1:
                         if (!(i < files.length)) return [3, 4];
                         unstructured = files[i].unstructured;
-                        return [4, this.routeController.typeOf(unstructured.ext, jsonPath)];
+                        return [4, this.routeController.typeOf(unstructured.ext)];
                     case 2:
                         finalPath = _a.sent();
                         if (initialRoute)

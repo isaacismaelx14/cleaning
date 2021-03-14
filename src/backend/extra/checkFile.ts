@@ -1,10 +1,6 @@
-import { jsonResponse, redingJson } from "./readConfi.controller";
+import { jsonResponse, redingJson } from "./config.controller";
 
-let jsonPath: string = __dirname + "\\json\\files.config.json";
-
-async function main() {
-  await redingJson(jsonPath);
-}
+redingJson();
 
 export default class Checkers {
   private ext: string;
@@ -15,9 +11,8 @@ export default class Checkers {
   private videoFiles: string[] = jsonResponse.videoFiles.files;
   private executableFiles: string[] = jsonResponse.executableFiles.files;
 
-  constructor(ext: string, path: string) {
+  constructor(ext: string) {
     this.ext = ext;
-    jsonPath = path;
   }
 
   public isTextFile(): boolean {
@@ -77,5 +72,3 @@ export default class Checkers {
     }
   }
 }
-
-main();

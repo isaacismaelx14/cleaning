@@ -45,7 +45,6 @@ var organizeFiles_1 = __importDefault(require("../../backend/organizeFiles"));
 var organizeFiles = new organizeFiles_1.default();
 var response;
 var messageRespose = [];
-var jsonPath;
 function executeMove(array) {
     if (array === void 0) { array = []; }
     return __awaiter(this, void 0, void 0, function () {
@@ -90,7 +89,7 @@ function start(path) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4, organizeFiles
-                        .start(path, jsonPath)
+                        .start(path)
                         .then(function (res) { return __awaiter(_this, void 0, void 0, function () {
                         return __generator(this, function (_a) {
                             switch (_a.label) {
@@ -129,7 +128,6 @@ function createJson(path) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             config_controller_1.default(path);
-            jsonPath = path;
             return [2];
         });
     });

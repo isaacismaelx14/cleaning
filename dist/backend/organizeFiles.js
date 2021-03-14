@@ -44,7 +44,7 @@ var OrganizeFiles = (function () {
     function OrganizeFiles() {
         this.fileController = new file_controller_1.default();
     }
-    OrganizeFiles.prototype.start = function (path, jsonPath) {
+    OrganizeFiles.prototype.start = function (path) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
@@ -53,7 +53,7 @@ var OrganizeFiles = (function () {
                             messageType: "Error",
                             message: "Error desconocido Code 1-Unknoun",
                         };
-                        _this.gettingFiles(path, jsonPath)
+                        _this.gettingFiles(path)
                             .then(function (m) { return __awaiter(_this, void 0, void 0, function () {
                             var _a, _b;
                             var _this = this;
@@ -98,7 +98,7 @@ var OrganizeFiles = (function () {
             });
         });
     };
-    OrganizeFiles.prototype.gettingFiles = function (path, jsonPath) {
+    OrganizeFiles.prototype.gettingFiles = function (path) {
         var _this = this;
         return new Promise(function (resolve, reject) {
             var fController = _this.fileController;
@@ -108,7 +108,7 @@ var OrganizeFiles = (function () {
                         reject(false);
                     }
                     else {
-                        this.filesToMove = fController.checkType(result, path, jsonPath);
+                        this.filesToMove = fController.checkType(result, path);
                         resolve(true);
                     }
                     return [2];

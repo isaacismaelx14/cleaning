@@ -4,7 +4,6 @@ import * as os from "os";
 
 const cpus: number = os.cpus().length;
 const waitTime: number = cpus <= 2 ? 25 : cpus <= 4 ? 13 : cpus <= 6 ? 10 : 5;
-console.log(waitTime);
 
 export default class FileController {
   private routeController: RouteController;
@@ -31,16 +30,12 @@ export default class FileController {
 
   public async checkType(
     files: IFilesComplement[],
-    initialRoute: string,
-    jsonPath: string
+    initialRoute: string
   ): Promise<IFileToMove[]> {
     let preFilesToMove: IFileToMove[] = [];
     for (let i: number = 0; i < files.length; i++) {
       const { unstructured } = files[i];
-      const finalPath = await this.routeController.typeOf(
-        unstructured.ext,
-        jsonPath
-      );
+      const finalPath = await this.routeController.typeOf(unstructured.ext);
 
       if (initialRoute)
         preFilesToMove.push({

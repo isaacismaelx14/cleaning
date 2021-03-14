@@ -1,27 +1,28 @@
 import * as fs from "fs";
 import Checkers from "./checkFile";
-import { readJson } from "./config.controller";
-import { jsonResponse } from "./readConfi.controller";
+import { jsonResponse, redingJson } from "./config.controller";
+
+let audioPath: string;
+let compressedPath: string;
+let execPath: string;
+let imagePath: string;
+let textPath: string;
+let videoPath: string;
+let othersPath: string;
 
 export default class RouteController {
-  private audioPath: string;
-  private compressedPath: string;
-  private execPath: string;
-  private imagePath: string;
-  private textPath: string;
-  private videoPath: string;
-  private otherPath?: string | undefined;
-
   constructor() {
-    this.audioPath = jsonResponse.audioFiles.routeFor;
-    this.compressedPath = jsonResponse.compressedFiles.routeFor;
-    this.execPath = jsonResponse.executableFiles.routeFor;
-    this.imagePath = jsonResponse.imageFiles.routeFor;
-    this.textPath = jsonResponse.textFiles.routeFor;
-    this.videoPath = jsonResponse.videoFiles.routeFor;
-    if (jsonResponse.othersFiles) {
-      this.otherPath = jsonResponse.othersFiles.routeFor;
-    }
+    redingJson().then(() => {
+      audioPath = jsonResponse.audioFiles.routeFor;
+      compressedPath = jsonResponse.compressedFiles.routeFor;
+      execPath = jsonResponse.executableFiles.routeFor;
+      imagePath = jsonResponse.imageFiles.routeFor;
+      videoPath = jsonResponse.videoFiles.routeFor;
+      textPath = jsonResponse.textFiles.routeFor;
+      if (jsonResponse.othersFiles) {
+        othersPath = jsonResponse.othersFiles.routeFor;
+      }
+    });
   }
 
   private async checkExist(path: string): Promise<string> {
@@ -30,32 +31,39 @@ export default class RouteController {
   }
 
   private async forAudio(): Promise<string> {
-    return this.checkExist(this.audioPath);
+    return this.checkExist(audioPath);
   }
 
   private async forCompressed(): Promise<string> {
-    return this.checkExist(this.compressedPath);
+    return this.checkExist(compressedPath);
   }
 
   private async forExec(): Promise<string> {
-    return this.checkExist(this.execPath);
+    return this.checkExist(execPath);
   }
 
   private async forImage(): Promise<string> {
-    return this.checkExist(this.imagePath);
+    return this.checkExist(imagePath);
   }
 
   private async forText(): Promise<string> {
-    return this.checkExist(this.textPath);
+    return this.checkExist(textPath);
   }
 
   private async forVideo(): Promise<string> {
-    return this.checkExist(this.videoPath);
+    return this.checkExist(videoPath);
   }
 
-  async typeOf(ext: string, jsonPath): Promise<string> {
-    const checker = new Checkers(ext, jsonPath);
+  private async forUnknown(): Promise<string> {
+    if (othersPath) {
+      return othersPath;
+    } else {
+      return "unknow";
+    }
+  }
 
+  async typeOf(ext: string): Promise<string> {
+    const checker = new Checkers(ext);
     switch (true) {
       case checker.isAudioFile():
         return this.forAudio();
@@ -70,7 +78,7 @@ export default class RouteController {
       case checker.isVideoFile():
         return this.forVideo();
       default:
-        return "unknow";
+        return this.forUnknown();
     }
   }
 }

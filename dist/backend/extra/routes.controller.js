@@ -60,18 +60,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs = __importStar(require("fs"));
 var checkFile_1 = __importDefault(require("./checkFile"));
-var readConfi_controller_1 = require("./readConfi.controller");
+var config_controller_1 = require("./config.controller");
+var audioPath;
+var compressedPath;
+var execPath;
+var imagePath;
+var textPath;
+var videoPath;
+var othersPath;
 var RouteController = (function () {
     function RouteController() {
-        this.audioPath = readConfi_controller_1.jsonResponse.audioFiles.routeFor;
-        this.compressedPath = readConfi_controller_1.jsonResponse.compressedFiles.routeFor;
-        this.execPath = readConfi_controller_1.jsonResponse.executableFiles.routeFor;
-        this.imagePath = readConfi_controller_1.jsonResponse.imageFiles.routeFor;
-        this.textPath = readConfi_controller_1.jsonResponse.textFiles.routeFor;
-        this.videoPath = readConfi_controller_1.jsonResponse.videoFiles.routeFor;
-        if (readConfi_controller_1.jsonResponse.othersFiles) {
-            this.otherPath = readConfi_controller_1.jsonResponse.othersFiles.routeFor;
-        }
+        config_controller_1.redingJson().then(function () {
+            audioPath = config_controller_1.jsonResponse.audioFiles.routeFor;
+            compressedPath = config_controller_1.jsonResponse.compressedFiles.routeFor;
+            execPath = config_controller_1.jsonResponse.executableFiles.routeFor;
+            imagePath = config_controller_1.jsonResponse.imageFiles.routeFor;
+            videoPath = config_controller_1.jsonResponse.videoFiles.routeFor;
+            textPath = config_controller_1.jsonResponse.textFiles.routeFor;
+            if (config_controller_1.jsonResponse.othersFiles) {
+                othersPath = config_controller_1.jsonResponse.othersFiles.routeFor;
+            }
+        });
     }
     RouteController.prototype.checkExist = function (path) {
         return __awaiter(this, void 0, void 0, function () {
@@ -85,52 +94,65 @@ var RouteController = (function () {
     RouteController.prototype.forAudio = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.checkExist(this.audioPath)];
+                return [2, this.checkExist(audioPath)];
             });
         });
     };
     RouteController.prototype.forCompressed = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.checkExist(this.compressedPath)];
+                return [2, this.checkExist(compressedPath)];
             });
         });
     };
     RouteController.prototype.forExec = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.checkExist(this.execPath)];
+                return [2, this.checkExist(execPath)];
             });
         });
     };
     RouteController.prototype.forImage = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.checkExist(this.imagePath)];
+                return [2, this.checkExist(imagePath)];
             });
         });
     };
     RouteController.prototype.forText = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.checkExist(this.textPath)];
+                return [2, this.checkExist(textPath)];
             });
         });
     };
     RouteController.prototype.forVideo = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2, this.checkExist(this.videoPath)];
+                return [2, this.checkExist(videoPath)];
             });
         });
     };
-    RouteController.prototype.typeOf = function (ext, jsonPath) {
+    RouteController.prototype.forUnknown = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (othersPath) {
+                    return [2, othersPath];
+                }
+                else {
+                    return [2, "unknow"];
+                }
+                return [2];
+            });
+        });
+    };
+    RouteController.prototype.typeOf = function (ext) {
         return __awaiter(this, void 0, void 0, function () {
             var checker, _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        checker = new checkFile_1.default(ext, jsonPath);
+                        checker = new checkFile_1.default(ext);
                         _a = true;
                         switch (_a) {
                             case checker.isAudioFile(): return [3, 2];
@@ -151,7 +173,7 @@ var RouteController = (function () {
                     case 5: return [2, this.forImage()];
                     case 6: return [2, this.forText()];
                     case 7: return [2, this.forVideo()];
-                    case 8: return [2, "unknow"];
+                    case 8: return [2, this.forUnknown()];
                 }
             });
         });
