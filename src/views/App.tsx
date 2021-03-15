@@ -1,6 +1,6 @@
 import React from "react";
 import StoreProvider from "../Hooks/Store.provider";
-import Home from "./homePage/Home";
+import Home from "../components/homePage/Home";
 
 function App() {
   return (

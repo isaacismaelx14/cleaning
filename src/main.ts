@@ -40,7 +40,7 @@ app.on("ready", () => {
   });
 });
 
-function createNewProductWindow() {
+function createSetupFoldersWindow() {
   newProductWindow = new BrowserWindow({
     width: 300,
     height: 360,
@@ -56,11 +56,10 @@ function createNewProductWindow() {
       nodeIntegrationInWorker: true,
     },
   });
-  // newProductWindow.setMenu(null);
   newProductWindow.menuBarVisible = false;
   newProductWindow.loadURL(
     url.format({
-      pathname: path.join(__dirname, "views/new-product.html"),
+      pathname: path.join(__dirname, "sources/setup.html"),
       protocol: "file",
       slashes: true,
     })
@@ -79,17 +78,10 @@ ipcMain.on("select:folder", (e, FolderPath) => {
   mainWindow.webContents.send("selected:folder", FolderPath);
 });
 
-const templateMenu:Electron.MenuItemConstructorOptions[] = [
+const templateMenu: Electron.MenuItemConstructorOptions[] = [
   {
     label: "File",
     submenu: [
-      {
-        label: "New Product",
-        accelerator: "Ctrl+N",
-        click() {
-          createNewProductWindow();
-        },
-      },
       {
         label: "Exit",
         accelerator: process.platform == "darwin" ? "comand+q" : "Ctrl+Q",
@@ -99,11 +91,21 @@ const templateMenu:Electron.MenuItemConstructorOptions[] = [
       },
     ],
   },
+  {
+    label: "Configuration",
+    submenu: [
+      {
+        label: "Setup folders",
+        click() {
+          createSetupFoldersWindow();
+        },
+      },
+    ],
+  },
 ];
 
 if (process.platform === "darwin") {
-  templateMenu.unshift(
-    {
+  templateMenu.unshift({
     label: app.getName(),
   });
 }
@@ -115,7 +117,7 @@ if (process.env.NODE_ENV !== "production") {
       {
         label: "Show/Hide Dev Tools",
         accelerator: "f12",
-        click(item, focusedWindow:any) {
+        click(item, focusedWindow: any) {
           focusedWindow.toggleDevTools();
         },
       },

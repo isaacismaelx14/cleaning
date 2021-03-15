@@ -32,7 +32,7 @@ app.on("ready", function () {
         app.quit();
     });
 });
-function createNewProductWindow() {
+function createSetupFoldersWindow() {
     newProductWindow = new BrowserWindow({
         width: 300,
         height: 360,
@@ -50,7 +50,7 @@ function createNewProductWindow() {
     });
     newProductWindow.menuBarVisible = false;
     newProductWindow.loadURL(url.format({
-        pathname: path.join(__dirname, "views/new-product.html"),
+        pathname: path.join(__dirname, "sources/setup.html"),
         protocol: "file",
         slashes: true,
     }));
@@ -70,17 +70,21 @@ var templateMenu = [
         label: "File",
         submenu: [
             {
-                label: "New Product",
-                accelerator: "Ctrl+N",
-                click: function () {
-                    createNewProductWindow();
-                },
-            },
-            {
                 label: "Exit",
                 accelerator: process.platform == "darwin" ? "comand+q" : "Ctrl+Q",
                 click: function () {
                     app.quit();
+                },
+            },
+        ],
+    },
+    {
+        label: "Configuration",
+        submenu: [
+            {
+                label: "Setup folders",
+                click: function () {
+                    createSetupFoldersWindow();
                 },
             },
         ],

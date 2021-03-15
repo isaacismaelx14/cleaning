@@ -2,7 +2,10 @@ const path = require("path");
 
 module.exports = {
   mode: "development",
-  entry: "./dist/index.js",
+  entry: {
+    index: "./dist/react/index.js",
+    setup: "./dist/react/setup.index.js",
+  },
   devtool: "inline-source-map",
   target: "electron-renderer",
   module: {
@@ -52,7 +55,7 @@ module.exports = {
     extensions: [".js"],
   },
   output: {
-    filename: "app.js",
+    filename: "[name].js",
     path: path.resolve(__dirname, "build", "js"),
   },
 };

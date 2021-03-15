@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
 import Renderer from "electron";
 import { executeMove, createJson } from "../../sources/js/doMove";
-import List from "../../components/List";
+import List from "../List";
 import ButtonSm from "../../addons/buttons";
-import StateApp from "../../components/StateApp";
+import StateApp from "../StateApp";
 import { StoreContext } from "../../Hooks/Store.provider";
 
 type TypeAppState = typeof initAppState;
