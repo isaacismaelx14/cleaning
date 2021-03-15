@@ -1,24 +1,24 @@
-Thinking the name app, yet
+# Thinking the name app, yet
 
 Por lo general tenemos cientos de archivos en nuestra pc, mucha veces el escritorio de nuestra pc es un caos, para eso hemos creado esta solución `|name app|` es una app que te ayudara diariamente con esto.
 
 Organiza los archivos en tus distintas carpetas con tan solo un click, divide los archivos entre distintas carpetas segun el tipo de archivo. Esto te ayudara a tener un mejor control del mismo, sabiendo cuales archivos estan duplicados y cuales no usas menos.
 
-###Descarga el software compilado💞:
+### Descarga el software compilado💞:
 windows: [https://thelinkwindow.com]
 linux: [https://thelinklinux.com]
 
 ---
 
-##Developers options👨🏾‍💻:
+## Developers options👨🏾‍💻:
 Estas espesificaciones son especiales para los _developers_
 
-###Requisistos 📋:
+### Requisistos 📋:
 Para este projecto necesitaras tener [node-js](https://nodejs.org/en/) instalado en tu dispositivo.
 
 ---
 
-###Empezando 🚀:
+### Empezando 🚀:
 
 **_Primero necesitaras crear el directorio dist & build, comandos:_**
 
@@ -34,7 +34,7 @@ _Por ultimo creamos build:_
 npm run create:build
 ```
 
-####**_Luego de eso podras inicia la aplicacion:_**
+#### **_Luego de eso podras inicia la aplicacion:_**
 
 _Inicia solo la aplicacion:_
 
@@ -50,7 +50,7 @@ npm run dev
 
 ---
 
-####_Otros comandos_:
+#### _Otros comandos_:
 
 ```
 npm run copy-files
