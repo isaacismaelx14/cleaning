@@ -1,8 +1,8 @@
 # Thinking the name app, yet
 
-Por lo general tenemos cientos de archivos en nuestra pc, mucha veces el escritorio de nuestra pc es un caos, para eso hemos creado esta solución `|name app|` es una app que te ayudara diariamente con esto.
+Por lo general tenemos cientos de archivos en nuestro pc, muchas veces el escritorio de nuestro pc es un caos, para eso hemos creado esta solución `|name app|` es una app que te ayudara diariamente con esto.
 
-Organiza los archivos en tus distintas carpetas con tan solo un click, divide los archivos entre distintas carpetas segun el tipo de archivo. Esto te ayudara a tener un mejor control del mismo, sabiendo cuales archivos estan duplicados y cuales no usas menos.
+Organiza los archivos en tus distintas carpetas con tan solo un click, divide los archivos entre distintas carpetas según el tipo de archivo. Esto te ayudara a tener un mejor control del mismo, sabiendo cuales archivos están duplicados y cuales no usas menos.
 
 ### Descarga el software compilado💞:
 windows: [https://thelinkwindow.com]
