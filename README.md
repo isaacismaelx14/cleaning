@@ -74,13 +74,13 @@ _Inicia el compilador de **tsc** y se queda escuchando por nuevos cambios_
 npm run build:webpack
 ```
 
-_Crea el directorio **build** \*-> es recomendado usar: `"npm run create:build"`_([ver comando](#empezando))
+_Crea el directorio **build** \*-> es recomendado usar: `"npm run create:build"`_([ver comando](#empezando-))
 
 ```
 npm run build:typescript
 ```
 
-_Crea el directorio **dist** \*-> es recomendado usar: `"npm run create:dist"`_ ([ver comando](#empezando))
+_Crea el directorio **dist** \*-> es recomendado usar: `"npm run create:dist"`_ ([ver comando](#empezando-))
 
 ---
 
