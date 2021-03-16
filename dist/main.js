@@ -30,7 +30,7 @@ var Menu_controller_1 = require("./electron/Menu.controller");
 var ipcMain_controller_1 = __importDefault(require("./electron/ipcMain.controller"));
 var mainWindowHeight = 650;
 var mainWindowWidth = 890;
-var pathJson = __dirname + "\\sources\\json\\;;
+var pathJson = __dirname + "\\sources\\json\\";
 electron_1.app.on("ready", function () {
     var mainWindow = new electron_1.BrowserWindow({
         center: true,
@@ -42,7 +42,7 @@ electron_1.app.on("ready", function () {
             nodeIntegrationInWorker: true,
         },
     });
-    var ipcMainWindowController = new ipcMain_controller_1.default(mainWindow);
+    var ipcMainWindowController = new ipcMain_controller_1.default(mainWindow, pathJson);
     var openSettings = function () {
         fs.readFile(pathJson + "files.config.json", "utf-8", function (err, data) {
             if (err) {

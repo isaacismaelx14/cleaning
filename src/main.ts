@@ -7,7 +7,7 @@ import IPCMainCotroller from "./electron/ipcMain.controller";
 
 const mainWindowHeight = 650;
 const mainWindowWidth = 890;
-const pathJson =  __dirname + "\\sources\\json\\;
+const pathJson = __dirname + "\\sources\\json\\";
 
 app.on("ready", () => {
   const mainWindow: Electron.BrowserWindow = new BrowserWindow({
@@ -20,20 +20,16 @@ app.on("ready", () => {
       nodeIntegrationInWorker: true,
     },
   });
-  const ipcMainWindowController = new IPCMainCotroller(mainWindow);
-  
+  const ipcMainWindowController = new IPCMainCotroller(mainWindow, pathJson);
+
   const openSettings = () => {
-    fs.readFile(
-      pathJson + "files.config.json",
-      "utf-8",
-      (err, data) => {
-        if (err) {
-          console.log("error: ", err);
-        } else {
-          ipcMainWindowController.openSettins(data);
-        }
+    fs.readFile(pathJson + "files.config.json", "utf-8", (err, data) => {
+      if (err) {
+        console.log("error: ", err);
+      } else {
+        ipcMainWindowController.openSettins(data);
       }
-    );
+    });
   };
 
   const templateMenu = setTemplateMenu(app, openSettings);
