@@ -60,6 +60,7 @@ export default function Home() {
   useEffect(() => {
     createJson(store.path);
 
+    console.log(`file:///${__dirname}`);
     Renderer.ipcRenderer.on("selected:folder", (e, selected) => {
       if (selected) {
         handleAddItem(selected[0]);
@@ -76,6 +77,9 @@ export default function Home() {
         setToDo([...toDo, item]);
       }
     }
+    return () => {
+      setItem(undefined);
+    };
   }, [item]);
 
   useEffect(() => {
