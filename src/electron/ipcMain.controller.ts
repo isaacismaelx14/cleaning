@@ -16,6 +16,14 @@ export default class IPCMainCotroller {
     });
   }
   /**
+   * launchSettings
+   */
+  public launchSettings(callbak: Function) {
+    ipcMain.on("lauch:settings", () => {
+      callbak();
+    });
+  }
+  /**
    * openSettins
    */
   public openSettins(data: unknown) {

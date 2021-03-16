@@ -19,23 +19,8 @@ export default function Home() {
   const [appState, setAppState] = useState(initAppState);
   const [fileToMove, setFileToMove] = useState(undefined);
   const [store, dispatch] = useContext(StoreContext);
-
   const [toDo, setToDo] = useState([]);
-
-  useEffect(() => {
-    if (item) {
-      const check: any[] = toDo.filter(
-        (itemList) => itemList.path === item.path
-      );
-      if (check.length === 0) {
-        setToDo([...toDo, item]);
-      }
-    }
-  }, [item]);
-
-  useEffect(() => {
-    console.log(toDo);
-  }, [toDo]);
+  const isToDo = toDo.length > 0;
 
   const sendCall = (e) => {
     setAppState("none");
@@ -43,12 +28,15 @@ export default function Home() {
     e.preventDefault();
   };
 
+  const handleSeeTemplate = () => {
+    Renderer.ipcRenderer.send("lauch:settings");
+  };
+
   const handleAddItem = (task) => {
     setItem({
       id: Date.now(),
       path: task,
     });
-    console.log("clicked");
   };
 
   const handleDeleteItem = (e, itemId) => {
@@ -79,18 +67,49 @@ export default function Home() {
     });
   }, []);
 
+  useEffect(() => {
+    if (item) {
+      const check: any[] = toDo.filter(
+        (itemList) => itemList.path === item.path
+      );
+      if (check.length === 0) {
+        setToDo([...toDo, item]);
+      }
+    }
+  }, [item]);
+
+  useEffect(() => {
+    console.log(toDo);
+  }, [toDo]);
+
   return (
     <div className="container p-4">
       <div className="row">
         <div className="col">
-          {toDo.length > 0 && <List list={toDo} func={handleDeleteItem} />}
+          {appState != "none" ? (
+            <StateApp state={appState} file={fileToMove} />
+          ) : (
+            <div>
+              {!isToDo && (
+                <div>
+                  <h2>Empieza a ordernar tus archivos</h2>
+                  <p>
+                    Pulsa <span>Añadir folder</span> para empezar
+                  </p>
+                </div>
+              )}
+              <ButtonSm color="primary" onClick={() => handleSeeTemplate()}>
+                Ver templates
+              </ButtonSm>
+              {isToDo && <List list={toDo} func={handleDeleteItem} />}
+              <ButtonSm onClick={sendCall}>Añadir folder</ButtonSm>
+              {isToDo && (
+                <ButtonSm onClick={handleClickOrder}>Ordernar</ButtonSm>
+              )}
+            </div>
+          )}
 
-          <ButtonSm onClick={sendCall}>Añadir folder</ButtonSm>
-          <ButtonSm onClick={handleClickOrder}>Ordernar</ButtonSm>
-          <StateApp state={appState} file={fileToMove} />
-          <div className="mt-2">
-            <ButtonSm color="primary">Ver templates</ButtonSm>
-          </div>
+          <div className="mt-2"></div>
         </div>
       </div>
     </div>

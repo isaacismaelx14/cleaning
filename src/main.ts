@@ -1,7 +1,7 @@
 import url from "url";
 import path from "path";
 import * as fs from "fs";
-import { app, BrowserWindow, Menu, ipcMain, dialog } from "electron";
+import { app, BrowserWindow, Menu } from "electron";
 import { setTemplateMenu } from "./electron/Menu.controller";
 import IPCMainCotroller from "./electron/ipcMain.controller";
 
@@ -19,23 +19,7 @@ app.on("ready", () => {
       nodeIntegrationInWorker: true,
     },
   });
-
-  mainWindow.loadURL(
-    url.format({
-      pathname: path.join(__dirname, "sources/app.html"),
-      protocol: "file",
-      slashes: true,
-    })
-  );
-
   const ipcMainWindowController = new IPCMainCotroller(mainWindow);
-
-  ipcMainWindowController.startIpcMain();
-
-  mainWindow.on("closed", () => {
-    app.quit();
-  });
-
   const openSettings = () => {
     fs.readFile(
       __dirname + "\\sources\\json\\files.config.json",
@@ -53,6 +37,21 @@ app.on("ready", () => {
   const templateMenu = setTemplateMenu(app, openSettings);
   const mainMenu = Menu.buildFromTemplate(templateMenu);
   Menu.setApplicationMenu(mainMenu);
+
+  ipcMainWindowController.startIpcMain();
+  ipcMainWindowController.launchSettings(openSettings);
+
+  mainWindow.loadURL(
+    url.format({
+      pathname: path.join(__dirname, "sources/app.html"),
+      protocol: "file",
+      slashes: true,
+    })
+  );
+
+  mainWindow.on("closed", () => {
+    app.quit();
+  });
 });
 
 if (process.env.NODE_ENV !== "production")

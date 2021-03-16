@@ -41,16 +41,7 @@ electron_1.app.on("ready", function () {
             nodeIntegrationInWorker: true,
         },
     });
-    mainWindow.loadURL(url_1.default.format({
-        pathname: path_1.default.join(__dirname, "sources/app.html"),
-        protocol: "file",
-        slashes: true,
-    }));
     var ipcMainWindowController = new ipcMain_controller_1.default(mainWindow);
-    ipcMainWindowController.startIpcMain();
-    mainWindow.on("closed", function () {
-        electron_1.app.quit();
-    });
     var openSettings = function () {
         fs.readFile(__dirname + "\\sources\\json\\files.config.json", "utf-8", function (err, data) {
             if (err) {
@@ -64,6 +55,16 @@ electron_1.app.on("ready", function () {
     var templateMenu = Menu_controller_1.setTemplateMenu(electron_1.app, openSettings);
     var mainMenu = electron_1.Menu.buildFromTemplate(templateMenu);
     electron_1.Menu.setApplicationMenu(mainMenu);
+    ipcMainWindowController.startIpcMain();
+    ipcMainWindowController.launchSettings(openSettings);
+    mainWindow.loadURL(url_1.default.format({
+        pathname: path_1.default.join(__dirname, "sources/app.html"),
+        protocol: "file",
+        slashes: true,
+    }));
+    mainWindow.on("closed", function () {
+        electron_1.app.quit();
+    });
 });
 if (process.env.NODE_ENV !== "production")
     require("electron-reload")(__dirname, {
