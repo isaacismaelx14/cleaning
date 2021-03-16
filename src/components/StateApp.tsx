@@ -5,10 +5,10 @@ export default function StateApp(props) {
     return (
       <div>
         <h2>Espere un segundo</h2>
-        <div class="d-flex align-items-center">
+        <div className="d-flex align-items-center">
           <strong>Procesando...</strong>
           <div
-            class="spinner-border ms-auto"
+            className="spinner-border ms-auto"
             role="status"
             aria-hidden="true"
           ></div>
@@ -29,9 +29,12 @@ export default function StateApp(props) {
             With supporting text below as a natural lead-in to additional
             content.
           </p>
-          <a href="#" className="btn btn-primary">
+          <button
+            onClick={() => props.setState("none")}
+            className="btn btn-primary"
+          >
             volver
-          </a>
+          </button>
           <a href="#" className="btn btn-success">
             Ver resume
           </a>

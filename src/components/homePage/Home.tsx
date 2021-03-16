@@ -5,6 +5,7 @@ import List from "../List";
 import ButtonSm from "../../addons/buttons";
 import StateApp from "../StateApp";
 import { StoreContext } from "../../Hooks/Store.provider";
+import Setup from "../../views/Setup";
 
 const initAppState: IAppState = "none";
 const initList = [
@@ -14,14 +15,17 @@ const initList = [
   },
 ];
 
-export default function Home() {
+export default function Home(props: {
+  showSettings: any;
+  setShowSettings: any;
+  data: any;
+}) {
   const [item, setItem] = useState();
   const [appState, setAppState] = useState(initAppState);
   const [fileToMove, setFileToMove] = useState(undefined);
   const [store, dispatch] = useContext(StoreContext);
   const [toDo, setToDo] = useState([]);
   const isToDo = toDo.length > 0;
-
   const sendCall = (e) => {
     setAppState("none");
     Renderer.ipcRenderer.send("select:folder");
@@ -60,7 +64,6 @@ export default function Home() {
   useEffect(() => {
     createJson(store.path);
 
-    console.log(`file:///${__dirname}`);
     Renderer.ipcRenderer.on("selected:folder", (e, selected) => {
       if (selected) {
         handleAddItem(selected[0]);
@@ -86,12 +89,16 @@ export default function Home() {
     console.log(toDo);
   }, [toDo]);
 
-  return (
+  const showHomePage = () => (
     <div className="container p-4">
       <div className="row">
         <div className="col">
           {appState != "none" ? (
-            <StateApp state={appState} file={fileToMove} />
+            <StateApp
+              state={appState}
+              file={fileToMove}
+              setState={setAppState}
+            />
           ) : (
             <div>
               {!isToDo && (
@@ -116,6 +123,16 @@ export default function Home() {
           <div className="mt-2"></div>
         </div>
       </div>
+    </div>
+  );
+
+  return (
+    <div>
+      {props.showSettings ? (
+        <Setup data={props.data} changeState={props.setShowSettings} />
+      ) : (
+        <div>{showHomePage()}</div>
+      )}
     </div>
   );
 }

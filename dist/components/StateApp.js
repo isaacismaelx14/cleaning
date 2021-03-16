@@ -19,14 +19,14 @@ var react_1 = __importDefault(require("react"));
 function StateApp(props) {
     if (props.state === "doing") {
         return (jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx("h2", { children: "Espere un segundo" }, void 0),
-                jsx_runtime_1.jsxs("div", __assign({ class: "d-flex align-items-center" }, { children: [jsx_runtime_1.jsx("strong", { children: "Procesando..." }, void 0),
-                        jsx_runtime_1.jsx("div", { class: "spinner-border ms-auto", role: "status", "aria-hidden": "true" }, void 0)] }), void 0)] }, void 0));
+                jsx_runtime_1.jsxs("div", __assign({ className: "d-flex align-items-center" }, { children: [jsx_runtime_1.jsx("strong", { children: "Procesando..." }, void 0),
+                        jsx_runtime_1.jsx("div", { className: "spinner-border ms-auto", role: "status", "aria-hidden": "true" }, void 0)] }), void 0)] }, void 0));
     }
     else if (props.state === "Success") {
         return (jsx_runtime_1.jsxs("div", __assign({ className: "card" }, { children: [jsx_runtime_1.jsx("div", __assign({ className: "card-header bg-primary" }, { children: jsx_runtime_1.jsx("h4", __assign({ className: " text-white" }, { children: "Proceso terminado" }), void 0) }), void 0),
                 jsx_runtime_1.jsxs("div", __assign({ className: "card-body" }, { children: [jsx_runtime_1.jsxs("h5", __assign({ className: "card-title" }, { children: ["Numero de archivos procesados: ", props.file.length] }), void 0),
                         jsx_runtime_1.jsx("p", __assign({ className: "card-text" }, { children: "With supporting text below as a natural lead-in to additional content." }), void 0),
-                        jsx_runtime_1.jsx("a", __assign({ href: "#", className: "btn btn-primary" }, { children: "volver" }), void 0),
+                        jsx_runtime_1.jsx("button", __assign({ onClick: function () { return props.setState("none"); }, className: "btn btn-primary" }, { children: "volver" }), void 0),
                         jsx_runtime_1.jsx("a", __assign({ href: "#", className: "btn btn-success" }, { children: "Ver resume" }), void 0)] }), void 0)] }), void 0));
     }
     else if (props.state === "Error") {

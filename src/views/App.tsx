@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { MemoryRouter, Route } from "react-router";
 import StoreProvider from "../Hooks/Store.provider";
 import Home from "../components/homePage/Home";
 import { ipcRenderer } from "electron";
@@ -23,15 +24,13 @@ function App() {
   }, [showSettings]);
 
   return (
-    <div>
-      <StoreProvider>
-        {showSettings ? (
-          <Setup data={data} changeState={setShowSettings} />
-        ) : (
-          <Home />
-        )}
-      </StoreProvider>
-    </div>
+    <StoreProvider>
+      <Home
+        showSettings={showSettings}
+        data={data}
+        setShowSettings={setShowSettings}
+      />
+    </StoreProvider>
   );
 }
 export default App;

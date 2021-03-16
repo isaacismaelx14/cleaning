@@ -10,7 +10,7 @@ export default function List(props) {
             className="btn btn-danger btn-sm"
             onClick={(e) => props.func(e, element.id)}
           >
-            Remove from list
+            Quitar de la lista
           </button>
         </div>
       ))}

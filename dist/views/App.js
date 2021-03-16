@@ -27,7 +27,6 @@ var react_1 = __importStar(require("react"));
 var Store_provider_1 = __importDefault(require("../Hooks/Store.provider"));
 var Home_1 = __importDefault(require("../components/homePage/Home"));
 var electron_1 = require("electron");
-var Setup_1 = __importDefault(require("./Setup"));
 function App() {
     var _a = react_1.useState(false), showSettings = _a[0], setShowSettings = _a[1];
     var _b = react_1.useState(), data = _b[0], setData = _b[1];
@@ -44,7 +43,7 @@ function App() {
         if (!showSettings)
             setData(undefined);
     }, [showSettings]);
-    return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx(Store_provider_1.default, { children: showSettings ? (jsx_runtime_1.jsx(Setup_1.default, { data: data, changeState: setShowSettings }, void 0)) : (jsx_runtime_1.jsx(Home_1.default, {}, void 0)) }, void 0) }, void 0));
+    return (jsx_runtime_1.jsx(Store_provider_1.default, { children: jsx_runtime_1.jsx(Home_1.default, { showSettings: showSettings, data: data, setShowSettings: setShowSettings }, void 0) }, void 0));
 }
 exports.default = App;
 //# sourceMappingURL=App.js.map
