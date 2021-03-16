@@ -18,7 +18,8 @@ var jsx_runtime_1 = require("react/jsx-runtime");
 var react_1 = __importDefault(require("react"));
 function StateApp(props) {
     if (props.state === "doing") {
-        return jsx_runtime_1.jsx("p", { children: "Doing" }, void 0);
+        return (jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx("h2", { children: "Espere un segundo" }, void 0),
+                jsx_runtime_1.jsx("div", __assign({ class: "spinner-border text-primary", role: "status" }, { children: jsx_runtime_1.jsx("span", __assign({ class: "visually-hidden" }, { children: "Procesando" }), void 0) }), void 0)] }, void 0));
     }
     else if (props.state === "Success") {
         return (jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx("h3", __assign({ className: "title succes" }, { children: "Proceso terminado" }), void 0),

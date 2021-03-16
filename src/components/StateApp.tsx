@@ -2,7 +2,14 @@ import React from "react";
 
 export default function StateApp(props) {
   if (props.state === "doing") {
-    return <p>Doing</p>;
+    return (
+      <div>
+        <h2>Espere un segundo</h2>
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Procesando</span>
+        </div>
+      </div>
+    );
   } else if (props.state === "Success") {
     return (
       <div>
