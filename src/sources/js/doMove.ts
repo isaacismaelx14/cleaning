@@ -13,7 +13,7 @@ export async function executeMove(array = []) {
 
 async function destrucTure(array, callBack) {
   for (let i = 0; i < array.length; ++i) {
-    await callBack(array[i].item + "\\");
+    await callBack(array[i].path + "\\");
   }
 }
 

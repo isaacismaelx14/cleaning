@@ -17,7 +17,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var jsx_runtime_1 = require("react/jsx-runtime");
 var react_1 = __importDefault(require("react"));
 function List(props) {
-    return (jsx_runtime_1.jsx("div", __assign({ id: "toDo", className: "container bg-success m-0" }, { children: props.list.map(function (element) { return (jsx_runtime_1.jsxs("div", __assign({ className: "list-item", id: element.id }, { children: [element.item, jsx_runtime_1.jsx("button", __assign({ className: "btn btn-danger btn-sm", onClick: function (e) { return props.func(e, element.id); } }, { children: "Remove from list" }), void 0)] }), element.id)); }) }), void 0));
+    return (jsx_runtime_1.jsx("div", __assign({ id: "toDo", className: "container bg-primary m-0" }, { children: props.list.map(function (element) { return (jsx_runtime_1.jsxs("div", __assign({ className: "list-item", id: element.id }, { children: [element.path, jsx_runtime_1.jsx("button", __assign({ className: "btn btn-danger btn-sm", onClick: function (e) { return props.func(e, element.id); } }, { children: "Remove from list" }), void 0)] }), element.id)); }) }), void 0));
 }
 exports.default = List;
 //# sourceMappingURL=List.js.map

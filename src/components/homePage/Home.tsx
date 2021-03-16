@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Renderer from "electron";
 import { executeMove, createJson } from "../../sources/js/doMove";
 import List from "../List";
@@ -6,23 +6,36 @@ import ButtonSm from "../../addons/buttons";
 import StateApp from "../StateApp";
 import { StoreContext } from "../../Hooks/Store.provider";
 
-type TypeAppState = typeof initAppState;
-
 const initAppState: IAppState = "none";
 const initList = [
   {
     id: "C:\\Users\\isaac\\Desktop\\Test",
-    item: "C:\\Users\\isaac\\Desktop\\Test",
+    path: "C:\\Users\\isaac\\Desktop\\Test",
   },
 ];
 
 export default function Home() {
-  const [list, setList] = useState(initList);
-  const [appState, setAppState] = useState<TypeAppState>(initAppState);
+  const [item, setItem] = useState();
+  const [appState, setAppState] = useState(initAppState);
   const [fileToMove, setFileToMove] = useState(undefined);
   const [store, dispatch] = useContext(StoreContext);
 
-  createJson(store.path);
+  const [toDo, setToDo] = useState([]);
+
+  useEffect(() => {
+    if (item) {
+      const check: any[] = toDo.filter(
+        (itemList) => itemList.path === item.path
+      );
+      if (check.length === 0) {
+        setToDo([...toDo, item]);
+      }
+    }
+  }, [item]);
+
+  useEffect(() => {
+    console.log(toDo);
+  }, [toDo]);
 
   const sendCall = (e) => {
     setAppState("none");
@@ -31,32 +44,22 @@ export default function Home() {
   };
 
   const handleAddItem = (task) => {
-    enterIntoArray(task, () => {
-      const newItem = {
-        id: task,
-        item: task,
-      };
-      setList([...list, newItem]);
+    setItem({
+      id: Date.now(),
+      path: task,
     });
+    console.log("clicked");
   };
 
   const handleDeleteItem = (e, itemId) => {
-    const newList = list.filter((item) => item.id !== itemId);
-    setList(newList);
+    const newList = toDo.filter((item) => item.id !== itemId);
+    setToDo(newList);
     e.preventDefault();
-  };
-
-  const enterIntoArray = (task, callBack) => {
-    const checkIfExist = () => list.filter((item) => item.item === task);
-
-    if (checkIfExist().length === 0) {
-      callBack();
-    }
   };
 
   const handleClickOrder = async (e) => {
     setAppState("doing");
-    const resp = await executeMove(list);
+    const resp = await executeMove(toDo);
     console.log(resp);
 
     if (resp.messageType) {
@@ -66,19 +69,28 @@ export default function Home() {
     e.preventDefault();
   };
 
-  Renderer.ipcRenderer.on("selected:folder", (e, selected) => {
-    if (selected) {
-      handleAddItem(selected[0]);
-    }
-  });
+  useEffect(() => {
+    createJson(store.path);
+
+    Renderer.ipcRenderer.on("selected:folder", (e, selected) => {
+      if (selected) {
+        handleAddItem(selected[0]);
+      }
+    });
+  }, []);
+
   return (
     <div className="container p-4">
       <div className="row">
         <div className="col">
-          <List list={list} func={handleDeleteItem} />
-          <ButtonSm onClick={sendCall}>Add Folder</ButtonSm>
-          <ButtonSm onClick={handleClickOrder}>Order Now</ButtonSm>
+          {toDo.length > 0 && <List list={toDo} func={handleDeleteItem} />}
+
+          <ButtonSm onClick={sendCall}>Añadir folder</ButtonSm>
+          <ButtonSm onClick={handleClickOrder}>Ordernar</ButtonSm>
           <StateApp state={appState} file={fileToMove} />
+          <div className="mt-2">
+            <ButtonSm color="primary">Ver templates</ButtonSm>
+          </div>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require("electron");
-const url = require("url");
-const path = require("path");
+import url from "url";
+import path from "path";
+import * as fs from "fs";
+import { app, BrowserWindow, Menu, ipcMain, dialog } from "electron";
 
 const mainWindowHeight = 650;
 const mainWindowWidth = 890;
@@ -10,7 +11,7 @@ if (process.env.NODE_ENV !== "production")
     electron: path.join(__dirname, "node_modules", ".bin", "electron"),
   });
 
-let mainWindow;
+let mainWindow: Electron.BrowserWindow;
 let newProductWindow;
 
 app.on("ready", () => {
@@ -42,15 +43,15 @@ app.on("ready", () => {
 
 function createSetupFoldersWindow() {
   newProductWindow = new BrowserWindow({
-    width: 300,
-    height: 360,
+    width: 500,
+    height: 460,
     title: "Add new product",
-    fullscreenable: false,
-    maximizable: false,
-    minimizable: false,
-    resizable: false,
-    parent: mainWindow,
-    modal: true,
+    // fullscreenable: false,
+    // maximizable: false,
+    // minimizable: false,
+    // resizable: false,
+    // parent: mainWindow,
+    // modal: true,
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
@@ -78,6 +79,20 @@ ipcMain.on("select:folder", (e, FolderPath) => {
   mainWindow.webContents.send("selected:folder", FolderPath);
 });
 
+const openSettings = () => {
+  fs.readFile(
+    __dirname + "\\sources\\json\\files.config.json",
+    "utf-8",
+    (err, data) => {
+      if (err) {
+        console.log("error: ", err);
+      } else {
+        mainWindow.webContents.send("open:settings", data);
+      }
+    }
+  );
+};
+
 const templateMenu: Electron.MenuItemConstructorOptions[] = [
   {
     label: "File",
@@ -97,7 +112,7 @@ const templateMenu: Electron.MenuItemConstructorOptions[] = [
       {
         label: "Setup folders",
         click() {
-          createSetupFoldersWindow();
+          openSettings();
         },
       },
     ],

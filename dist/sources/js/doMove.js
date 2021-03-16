@@ -71,7 +71,7 @@ function destrucTure(array, callBack) {
                     _a.label = 1;
                 case 1:
                     if (!(i < array.length)) return [3, 4];
-                    return [4, callBack(array[i].item + "\\")];
+                    return [4, callBack(array[i].path + "\\")];
                 case 2:
                     _a.sent();
                     _a.label = 3;

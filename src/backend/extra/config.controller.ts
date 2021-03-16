@@ -46,7 +46,8 @@ let jsonResponse: jsonRe;
 export function redingJson() {
   return fetch(__dirname + "\\json\\files.config.json")
     .then((resp) => resp.json())
-    .then((res) => (jsonResponse = res));
+    .then((res) => (jsonResponse = res))
+    .catch((e) => console.error(e));
 }
 
 export { jsonResponse };
