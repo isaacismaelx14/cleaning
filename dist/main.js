@@ -30,6 +30,7 @@ var Menu_controller_1 = require("./electron/Menu.controller");
 var ipcMain_controller_1 = __importDefault(require("./electron/ipcMain.controller"));
 var mainWindowHeight = 650;
 var mainWindowWidth = 890;
+var pathJson = __dirname + "\\sources\\json\\;;
 electron_1.app.on("ready", function () {
     var mainWindow = new electron_1.BrowserWindow({
         center: true,
@@ -43,7 +44,7 @@ electron_1.app.on("ready", function () {
     });
     var ipcMainWindowController = new ipcMain_controller_1.default(mainWindow);
     var openSettings = function () {
-        fs.readFile(__dirname + "\\sources\\json\\files.config.json", "utf-8", function (err, data) {
+        fs.readFile(pathJson + "files.config.json", "utf-8", function (err, data) {
             if (err) {
                 console.log("error: ", err);
             }
@@ -66,8 +67,4 @@ electron_1.app.on("ready", function () {
         electron_1.app.quit();
     });
 });
-if (process.env.NODE_ENV !== "production")
-    require("electron-reload")(__dirname, {
-        electron: path_1.default.join(__dirname, "node_modules", ".bin", "electron"),
-    });
 //# sourceMappingURL=main.js.map

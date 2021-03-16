@@ -4,10 +4,14 @@ import { PathLike } from "original-fs";
 
 const jsonBase = require("../json/files.base.json");
 
-export default function configController(path: string) {
+export default function configController(
+  file: string,
+  obj: object | null = null,
+  doComprobation: boolean = true
+) {
   const resp: jsonRe = jsonBase;
-  // const path: PathLike = __dirname + "\\json\\files.config.json";
   const homePath: PathLike = os.homedir();
+  const path = `${__dirname}\\json\\${file}`;
 
   const createJson: jsonRe = {
     audioFiles: {
@@ -36,8 +40,19 @@ export default function configController(path: string) {
     },
   };
 
-  if (!fs.existsSync(path)) {
-    fs.writeFileSync(path, JSON.stringify(createJson));
+  console.log(obj);
+
+  if (obj === null) {
+    obj = createJson;
+    console.log(null);
+  }
+
+  if (doComprobation) {
+    if (!fs.existsSync(path)) {
+      fs.writeFileSync(path, JSON.stringify(obj));
+    }
+  } else {
+    fs.writeFileSync(path, JSON.stringify(obj));
   }
 }
 

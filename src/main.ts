@@ -7,6 +7,7 @@ import IPCMainCotroller from "./electron/ipcMain.controller";
 
 const mainWindowHeight = 650;
 const mainWindowWidth = 890;
+const pathJson =  __dirname + "\\sources\\json\\;
 
 app.on("ready", () => {
   const mainWindow: Electron.BrowserWindow = new BrowserWindow({
@@ -20,9 +21,10 @@ app.on("ready", () => {
     },
   });
   const ipcMainWindowController = new IPCMainCotroller(mainWindow);
+  
   const openSettings = () => {
     fs.readFile(
-      __dirname + "\\sources\\json\\files.config.json",
+      pathJson + "files.config.json",
       "utf-8",
       (err, data) => {
         if (err) {
@@ -54,7 +56,7 @@ app.on("ready", () => {
   });
 });
 
-if (process.env.NODE_ENV !== "production")
-  require("electron-reload")(__dirname, {
-    electron: path.join(__dirname, "node_modules", ".bin", "electron"),
-  });
+// if (process.env.NODE_ENV !== "production")
+//   require("electron-reload")(__dirname, {
+//     electron: path.join(__dirname, "node_modules", ".bin", "electron"),
+//   });

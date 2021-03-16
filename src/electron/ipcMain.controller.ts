@@ -1,13 +1,24 @@
 import { ipcMain } from "electron";
 import { dialog } from "electron/main";
-
+import * as fs from "fs";
 export default class IPCMainCotroller {
   private window: Electron.BrowserWindow;
-  constructor(target: Electron.BrowserWindow) {
+  private pathJson: string;
+
+  constructor(target: Electron.BrowserWindow, path: string) {
     this.window = target;
+    this.pathJson = path;
   }
 
   public startIpcMain() {
+    fs.readFile(this.pathJson + "files.config.json", "utf-8", (err, data) => {
+      if (err) {
+        console.log("error: ", err);
+      } else {
+        this.window.webContents.send("get:list", data);
+      }
+    });
+
     ipcMain.on("select:folder", (e, FolderPath) => {
       FolderPath = dialog.showOpenDialogSync(this.window, {
         properties: ["openDirectory"],

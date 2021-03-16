@@ -6,6 +6,7 @@ import ButtonSm from "../../addons/buttons";
 import StateApp from "../StateApp";
 import { StoreContext } from "../../Hooks/Store.provider";
 import Setup from "../../views/Setup";
+import configController from "../../backend/extra/config.controller";
 
 const initAppState: IAppState = "none";
 const initList = [
@@ -86,7 +87,7 @@ export default function Home(props: {
   }, [item]);
 
   useEffect(() => {
-    console.log(toDo);
+    configController("toDo.json", { toDo: toDo }, false);
   }, [toDo]);
 
   const showHomePage = () => (
