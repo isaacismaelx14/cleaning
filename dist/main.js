@@ -26,16 +26,12 @@ var url_1 = __importDefault(require("url"));
 var path_1 = __importDefault(require("path"));
 var fs = __importStar(require("fs"));
 var electron_1 = require("electron");
+var Menu_controller_1 = require("./electron/Menu.controller");
+var ipcMain_controller_1 = __importDefault(require("./electron/ipcMain.controller"));
 var mainWindowHeight = 650;
 var mainWindowWidth = 890;
-if (process.env.NODE_ENV !== "production")
-    require("electron-reload")(__dirname, {
-        electron: path_1.default.join(__dirname, "node_modules", ".bin", "electron"),
-    });
-var mainWindow;
-var newProductWindow;
 electron_1.app.on("ready", function () {
-    mainWindow = new electron_1.BrowserWindow({
+    var mainWindow = new electron_1.BrowserWindow({
         center: true,
         height: mainWindowHeight,
         width: mainWindowWidth,
@@ -50,94 +46,27 @@ electron_1.app.on("ready", function () {
         protocol: "file",
         slashes: true,
     }));
-    var mainMenu = electron_1.Menu.buildFromTemplate(templateMenu);
-    electron_1.Menu.setApplicationMenu(mainMenu);
+    var ipcMainWindowController = new ipcMain_controller_1.default(mainWindow);
+    ipcMainWindowController.startIpcMain();
     mainWindow.on("closed", function () {
         electron_1.app.quit();
     });
+    var openSettings = function () {
+        fs.readFile(__dirname + "\\sources\\json\\files.config.json", "utf-8", function (err, data) {
+            if (err) {
+                console.log("error: ", err);
+            }
+            else {
+                ipcMainWindowController.openSettins(data);
+            }
+        });
+    };
+    var templateMenu = Menu_controller_1.setTemplateMenu(electron_1.app, openSettings);
+    var mainMenu = electron_1.Menu.buildFromTemplate(templateMenu);
+    electron_1.Menu.setApplicationMenu(mainMenu);
 });
-function createSetupFoldersWindow() {
-    newProductWindow = new electron_1.BrowserWindow({
-        width: 500,
-        height: 460,
-        title: "Add new product",
-        webPreferences: {
-            nodeIntegration: true,
-            nodeIntegrationInWorker: true,
-        },
+if (process.env.NODE_ENV !== "production")
+    require("electron-reload")(__dirname, {
+        electron: path_1.default.join(__dirname, "node_modules", ".bin", "electron"),
     });
-    newProductWindow.menuBarVisible = false;
-    newProductWindow.loadURL(url_1.default.format({
-        pathname: path_1.default.join(__dirname, "sources/setup.html"),
-        protocol: "file",
-        slashes: true,
-    }));
-}
-electron_1.ipcMain.on("product:new", function (e, newProduct) {
-    mainWindow.webContents.send("product:new", newProduct);
-    newProductWindow.close();
-});
-electron_1.ipcMain.on("select:folder", function (e, FolderPath) {
-    FolderPath = electron_1.dialog.showOpenDialogSync(mainWindow, {
-        properties: ["openDirectory"],
-    });
-    mainWindow.webContents.send("selected:folder", FolderPath);
-});
-var openSettings = function () {
-    fs.readFile(__dirname + "\\sources\\json\\files.config.json", "utf-8", function (err, data) {
-        if (err) {
-            console.log("error: ", err);
-        }
-        else {
-            mainWindow.webContents.send("open:settings", data);
-        }
-    });
-};
-var templateMenu = [
-    {
-        label: "File",
-        submenu: [
-            {
-                label: "Exit",
-                accelerator: process.platform == "darwin" ? "comand+q" : "Ctrl+Q",
-                click: function () {
-                    electron_1.app.quit();
-                },
-            },
-        ],
-    },
-    {
-        label: "Configuration",
-        submenu: [
-            {
-                label: "Setup folders",
-                click: function () {
-                    openSettings();
-                },
-            },
-        ],
-    },
-];
-if (process.platform === "darwin") {
-    templateMenu.unshift({
-        label: electron_1.app.getName(),
-    });
-}
-if (process.env.NODE_ENV !== "production") {
-    templateMenu.push({
-        label: "DevTools",
-        submenu: [
-            {
-                label: "Show/Hide Dev Tools",
-                accelerator: "f12",
-                click: function (item, focusedWindow) {
-                    focusedWindow.toggleDevTools();
-                },
-            },
-            {
-                role: "reload",
-            },
-        ],
-    });
-}
 //# sourceMappingURL=main.js.map
